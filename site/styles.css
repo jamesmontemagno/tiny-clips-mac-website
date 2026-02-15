@@ -374,6 +374,13 @@ h2 {
   color: var(--text-secondary);
 }
 
+iframe.video-slot {
+  width: 100%;
+  height: auto;
+  border: 0;
+  display: block;
+}
+
 /* Gallery Section */
 .gallery-grid {
   display: grid;
