@@ -1,0 +1,3 @@
+[submodule "tiny-clips-mac"]
+	path = tiny-clips-mac
+	url = https://github.com/jamesmontemagno/tiny-clips-mac.git

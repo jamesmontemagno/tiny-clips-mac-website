@@ -1,0 +1,10 @@
+# macOS
+.DS_Store
+
+# Xcode user-specific files (if any are created in this repo)
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+
+# Logs
+*.log
