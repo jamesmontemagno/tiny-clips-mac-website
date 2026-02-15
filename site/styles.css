@@ -413,6 +413,7 @@ iframe.video-slot {
   background: rgba(0,0,0,0.2);
   display: block;
   padding: 1rem;
+  cursor: zoom-in;
 }
 
 /* First item spans 2x2 */
@@ -424,6 +425,52 @@ iframe.video-slot {
 .gallery-wide img {
   object-fit: cover;
   padding: 0;
+}
+
+.gallery-lightbox {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(2, 6, 14, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 999;
+}
+
+.gallery-lightbox.is-open {
+  display: flex;
+}
+
+.gallery-lightbox-image {
+  width: min(92vw, 1400px);
+  max-height: 88vh;
+  object-fit: contain;
+  border-radius: 16px;
+  border: 1px solid var(--border-hover);
+  box-shadow: var(--shadow-lg);
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.gallery-lightbox-close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  border: 1px solid var(--border-hover);
+  background: rgba(17, 24, 39, 0.85);
+  color: var(--text);
+  border-radius: 999px;
+  width: 2.25rem;
+  height: 2.25rem;
+  cursor: pointer;
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.gallery-lightbox-close:hover {
+  background: rgba(30, 41, 59, 0.95);
 }
 
 /* Footer */
