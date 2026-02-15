@@ -121,7 +121,7 @@ a:hover {
 
 .hero-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.9fr 1.1fr;
   gap: 4rem;
   align-items: center;
 }
@@ -180,6 +180,20 @@ h1 {
 .badge-list li:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.2);
+}
+
+.size-highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+  padding: 0.55rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-hover);
+  background: rgba(79, 180, 255, 0.12);
+  color: #dce9ff;
+  font-weight: 700;
+  font-size: 0.95rem;
 }
 
 .cta-group {
@@ -384,13 +398,13 @@ iframe.video-slot {
 /* Gallery Section */
 .gallery-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 200px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
 }
 
 .gallery-item {
   margin: 0;
+  aspect-ratio: 16 / 10;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -414,17 +428,6 @@ iframe.video-slot {
   display: block;
   padding: 1rem;
   cursor: zoom-in;
-}
-
-/* First item spans 2x2 */
-.gallery-wide {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-
-.gallery-wide img {
-  object-fit: cover;
-  padding: 0;
 }
 
 .gallery-lightbox {
@@ -517,6 +520,10 @@ iframe.video-slot {
     grid-template-columns: 1fr;
     gap: 2rem;
   }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 650px) {
@@ -529,12 +536,6 @@ iframe.video-slot {
   }
   
   .gallery-grid {
-    grid-template-columns: 1fr 1fr; /* 2 columns on mobile */
-    grid-auto-rows: 150px;
-  }
-  
-  .gallery-wide {
-    grid-column: span 2;
-    grid-row: span 2;
+    grid-template-columns: 1fr;
   }
 }

@@ -11,9 +11,9 @@ if (appStoreLink) {
   });
 }
 
-const galleryImages = document.querySelectorAll('.gallery-grid .gallery-item img');
+const galleryGrid = document.querySelector('.gallery-grid');
 
-if (galleryImages.length > 0) {
+if (galleryGrid) {
   const lightbox = document.createElement('div');
   lightbox.className = 'gallery-lightbox';
   lightbox.setAttribute('aria-hidden', 'true');
@@ -38,14 +38,56 @@ if (galleryImages.length > 0) {
   };
 
   const openLightbox = (image) => {
-    lightboxImage.src = image.src;
+    lightboxImage.src = image.getAttribute('src') || '';
     lightboxImage.alt = image.alt;
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
   };
 
-  galleryImages.forEach((image) => {
-    image.addEventListener('click', () => openLightbox(image));
+  const galleryItems = galleryGrid.querySelectorAll('.gallery-item');
+  galleryItems.forEach((item) => {
+    item.setAttribute('tabindex', '0');
+    item.setAttribute('role', 'button');
+    item.setAttribute('aria-label', 'Open image in larger view');
+  });
+
+  galleryGrid.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    const galleryItem = target.closest('.gallery-item');
+    if (!galleryItem) {
+      return;
+    }
+
+    const image = galleryItem.querySelector('img');
+    if (image) {
+      openLightbox(image);
+    }
+  });
+
+  galleryGrid.addEventListener('keydown', (event) => {
+    if (event.key !== 'Enter' && event.key !== ' ') {
+      return;
+    }
+
+    const target = event.target;
+    if (!(target instanceof Element)) {
+      return;
+    }
+
+    const galleryItem = target.closest('.gallery-item');
+    if (!galleryItem) {
+      return;
+    }
+
+    const image = galleryItem.querySelector('img');
+    if (image) {
+      event.preventDefault();
+      openLightbox(image);
+    }
   });
 
   closeButton.addEventListener('click', closeLightbox);
