@@ -761,8 +761,8 @@ iframe.video-slot {
   background: rgba(30, 41, 59, 0.95);
 }
 
-/* Pro Section */
-.section-pro {
+/* Clips Manager Section */
+.section-manager {
   background:
     radial-gradient(ellipse at 60% 50%, rgba(79, 180, 255, 0.08), transparent 70%),
     linear-gradient(180deg, transparent 0%, rgba(79, 180, 255, 0.04) 100%);
@@ -770,28 +770,28 @@ iframe.video-slot {
   border-bottom: 1px solid var(--border);
 }
 
-.pro-grid {
+.manager-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 4rem;
   align-items: center;
 }
 
-.pro-content {
+.manager-content {
   max-width: 560px;
 }
 
-.pro-content h2 {
+.manager-content h2 {
   margin-bottom: 1rem;
 }
 
-.pro-platform-note {
+.manager-platform-note {
   margin: 0 0 1.4rem;
   color: #dce9ff;
   font-weight: 600;
 }
 
-.pro-features {
+.manager-features {
   list-style: none;
   margin: 0 0 2rem;
   padding: 0;
@@ -799,7 +799,7 @@ iframe.video-slot {
   gap: 0.85rem;
 }
 
-.pro-features li {
+.manager-features li {
   padding: 0.85rem 1.1rem;
   background: var(--bg-elevated);
   border: 1px solid var(--border);
@@ -812,19 +812,19 @@ iframe.video-slot {
   transition: background 0.2s ease;
 }
 
-.pro-features li:hover {
+.manager-features li:hover {
   background: rgba(30, 41, 59, 0.6);
   border-color: var(--border-hover);
 }
 
-.pro-features li::before {
+.manager-features li::before {
   content: "✦";
   color: var(--accent);
   font-weight: bold;
   flex-shrink: 0;
 }
 
-.pro-image-wrap {
+.manager-image-wrap {
   margin: 0;
   padding: 10px;
   border-radius: 20px;
@@ -834,11 +834,11 @@ iframe.video-slot {
   transition: transform 0.5s ease;
 }
 
-.pro-image-wrap:hover {
+.manager-image-wrap:hover {
   transform: scale(1.02);
 }
 
-.pro-image {
+.manager-image {
   width: 100%;
   height: auto;
   display: block;
@@ -977,21 +977,21 @@ iframe.video-slot {
     gap: 2rem;
   }
 
-  .pro-grid {
+  .manager-grid {
     grid-template-columns: 1fr;
     gap: 3rem;
   }
 
-  .pro-content {
+  .manager-content {
     margin: 0 auto;
     text-align: center;
   }
 
-  .pro-features li {
+  .manager-features li {
     text-align: left;
   }
 
-  .pro-content .cta-group {
+  .manager-content .cta-group {
     justify-content: center;
   }
 
