@@ -30,6 +30,16 @@ if (platformTabs.length > 0 && platformPanels.length > 0) {
     });
   };
 
+  const focusPlatformByOffset = (currentTab, offset) => {
+    const tabs = Array.from(platformTabs);
+    const currentIndex = tabs.indexOf(currentTab);
+    const nextIndex = (currentIndex + offset + tabs.length) % tabs.length;
+    const nextTab = tabs[nextIndex];
+    const platform = nextTab.dataset.platform || 'macos';
+    selectPlatform(platform);
+    nextTab.focus();
+  };
+
   const detectedPlatform = detectPlatform();
   selectPlatform(detectedPlatform);
 
@@ -38,34 +48,38 @@ if (platformTabs.length > 0 && platformPanels.length > 0) {
       const platform = tab.dataset.platform || 'macos';
       selectPlatform(platform);
     });
+
+    tab.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+        event.preventDefault();
+        focusPlatformByOffset(tab, 1);
+      }
+
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        focusPlatformByOffset(tab, -1);
+      }
+
+      if (event.key === 'Home') {
+        event.preventDefault();
+        const firstTab = platformTabs[0];
+        selectPlatform(firstTab.dataset.platform || 'macos');
+        firstTab.focus();
+      }
+
+      if (event.key === 'End') {
+        event.preventDefault();
+        const lastTab = platformTabs[platformTabs.length - 1];
+        selectPlatform(lastTab.dataset.platform || 'windows');
+        lastTab.focus();
+      }
+    });
   });
-}
 
-const installMethodTabs = document.querySelectorAll('.install-method-tab');
-const installMethodPanels = document.querySelectorAll('.install-method-panel');
-
-if (installMethodTabs.length > 0 && installMethodPanels.length > 0) {
-  const selectInstallMethod = (method) => {
-    installMethodTabs.forEach((tab) => {
-      const isActive = tab.dataset.installMethod === method;
-      tab.classList.toggle('is-active', isActive);
-      tab.setAttribute('aria-selected', String(isActive));
-      tab.setAttribute('tabindex', isActive ? '0' : '-1');
-    });
-
-    installMethodPanels.forEach((panel) => {
-      const isActive = panel.dataset.installMethod === method;
-      panel.classList.toggle('is-active', isActive);
-      panel.hidden = !isActive;
-    });
-  };
-
-  selectInstallMethod('app-store');
-
-  installMethodTabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const method = tab.dataset.installMethod || 'app-store';
-      selectInstallMethod(method);
+  document.querySelectorAll('[data-select-platform]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const platform = link.dataset.selectPlatform || 'macos';
+      selectPlatform(platform);
     });
   });
 }
@@ -109,7 +123,7 @@ if (copyCommandButtons.length > 0) {
         }
         setTemporaryButtonState(button, 'Copied', 'is-copied');
       } catch (error) {
-        setTemporaryButtonState(button, 'Failed');
+        setTemporaryButtonState(button, 'Copy failed');
       }
     });
   });
@@ -119,9 +133,14 @@ if (copyCommandButtons.length > 0) {
 const galleryGrid = document.querySelector('.gallery-grid');
 
 if (galleryGrid) {
+  let previouslyFocusedElement = null;
   const lightbox = document.createElement('div');
   lightbox.className = 'gallery-lightbox';
   lightbox.setAttribute('aria-hidden', 'true');
+  lightbox.setAttribute('role', 'dialog');
+  lightbox.setAttribute('aria-modal', 'true');
+  lightbox.setAttribute('aria-label', 'Enlarged product screenshot');
+  lightbox.setAttribute('tabindex', '-1');
 
   const closeButton = document.createElement('button');
   closeButton.className = 'gallery-lightbox-close';
@@ -140,13 +159,20 @@ if (galleryGrid) {
     lightbox.classList.remove('is-open');
     lightbox.setAttribute('aria-hidden', 'true');
     lightboxImage.removeAttribute('src');
+    document.body.classList.remove('is-lightbox-open');
+    if (previouslyFocusedElement instanceof HTMLElement) {
+      previouslyFocusedElement.focus();
+    }
   };
 
   const openLightbox = (image) => {
+    previouslyFocusedElement = document.activeElement;
     lightboxImage.src = image.getAttribute('src') || '';
     lightboxImage.alt = image.alt;
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('is-lightbox-open');
+    closeButton.focus();
   };
 
   const galleryItems = galleryGrid.querySelectorAll('.gallery-item');
@@ -204,8 +230,19 @@ if (galleryGrid) {
   });
 
   document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && lightbox.classList.contains('is-open')) {
+    if (!lightbox.classList.contains('is-open')) {
+      return;
+    }
+
+    if (event.key === 'Escape') {
+      event.preventDefault();
       closeLightbox();
+      return;
+    }
+
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      closeButton.focus();
     }
   });
 }
