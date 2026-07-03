@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-02T23:53:27.056-07:00",
+  "title": "Design System: Tiny Clips Website",
+  "extensions": {
+    "colorMeta": {
+      "background": {
+        "role": "neutral",
+        "displayName": "Studio Black",
+        "canonical": "#080b14",
+        "tonalRamp": ["oklch(15% 0.03 260)", "oklch(25% 0.03 260)", "oklch(35% 0.03 260)", "oklch(45% 0.03 260)", "oklch(55% 0.03 260)", "oklch(70% 0.02 260)", "oklch(85% 0.01 260)", "oklch(95% 0.005 260)"]
+      },
+      "background-soft": {
+        "role": "neutral",
+        "displayName": "Panel Navy",
+        "canonical": "#10182a",
+        "tonalRamp": ["oklch(16% 0.035 260)", "oklch(25% 0.035 260)", "oklch(35% 0.035 260)", "oklch(45% 0.03 260)", "oklch(58% 0.025 260)", "oklch(72% 0.02 260)", "oklch(86% 0.012 260)", "oklch(96% 0.006 260)"]
+      },
+      "background-elevated": {
+        "role": "neutral",
+        "displayName": "Glass Navy",
+        "canonical": "rgba(22, 30, 48, 0.6)",
+        "tonalRamp": ["oklch(18% 0.032 260 / 0.6)", "oklch(28% 0.032 260 / 0.6)", "oklch(38% 0.03 260 / 0.6)", "oklch(50% 0.026 260 / 0.6)", "oklch(62% 0.022 260 / 0.6)", "oklch(74% 0.018 260 / 0.6)", "oklch(86% 0.01 260 / 0.6)", "oklch(96% 0.005 260 / 0.6)"]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Capture White",
+        "canonical": "#f6f8ff",
+        "tonalRamp": ["oklch(18% 0.01 260)", "oklch(30% 0.01 260)", "oklch(45% 0.01 260)", "oklch(58% 0.01 260)", "oklch(70% 0.008 260)", "oklch(82% 0.006 260)", "oklch(92% 0.004 260)", "oklch(98% 0.002 260)"]
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Muted Periwinkle",
+        "canonical": "#a7b1cd",
+        "tonalRamp": ["oklch(20% 0.035 265)", "oklch(32% 0.035 265)", "oklch(44% 0.032 265)", "oklch(56% 0.03 265)", "oklch(68% 0.026 265)", "oklch(78% 0.02 265)", "oklch(88% 0.014 265)", "oklch(96% 0.008 265)"]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Capture Blue",
+        "canonical": "#4fb4ff",
+        "tonalRamp": ["oklch(20% 0.09 250)", "oklch(30% 0.11 250)", "oklch(42% 0.13 250)", "oklch(55% 0.15 250)", "oklch(68% 0.16 250)", "oklch(78% 0.13 250)", "oklch(88% 0.08 250)", "oklch(96% 0.035 250)"]
+      },
+      "code-text": {
+        "role": "neutral",
+        "displayName": "Cool Command Text",
+        "canonical": "#dce9ff",
+        "tonalRamp": ["oklch(20% 0.03 255)", "oklch(32% 0.035 255)", "oklch(44% 0.035 255)", "oklch(58% 0.03 255)", "oklch(72% 0.025 255)", "oklch(84% 0.018 255)", "oklch(92% 0.01 255)", "oklch(98% 0.005 255)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero and legal page titles only." },
+      "headline": { "displayName": "Headline", "purpose": "Section-level product proof and major feature claims." },
+      "title": { "displayName": "Title", "purpose": "Cards, panels, tabs, and dense feature groups." },
+      "body": { "displayName": "Body", "purpose": "Readable marketing copy and legal content." },
+      "label": { "displayName": "Sparse Label", "purpose": "Rare orientation labels, not repeated section scaffolding." }
+    },
+    "shadows": [
+      { "name": "button-glow", "value": "0 4px 14px rgba(79, 180, 255, 0.4)", "purpose": "Primary buttons and selected controls." },
+      { "name": "button-hover-glow", "value": "0 8px 20px rgba(79, 180, 255, 0.4)", "purpose": "Hovered primary actions." },
+      { "name": "surface-large", "value": "0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)", "purpose": "Media frames, hover cards, and lightbox imagery." },
+      { "name": "media-halo", "value": "0 0 120px rgba(79, 180, 255, 0.1)", "purpose": "Hero media emphasis only." }
+    ],
+    "motion": [
+      { "name": "state-fast", "value": "0.2s ease", "purpose": "Simple hover and tab state changes." },
+      { "name": "state-smooth", "value": "0.3s cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Navigation pills and larger interactive states." },
+      { "name": "media-scale", "value": "0.5s ease", "purpose": "Restrained hover scale on hero and manager media frames." }
+    ],
+    "breakpoints": [
+      { "name": "content-stack", "value": "900px" },
+      { "name": "mobile", "value": "640px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The main action surface for download and install actions.",
+      "html": "<button class=\"ds-btn-primary\">Download Now</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; border: 1px solid transparent; border-radius: 12px; background: var(--accent, #4fb4ff); color: var(--bg, #080b14); padding: 0.85rem 1.75rem; font: 600 1rem/1.2 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; box-shadow: 0 4px 14px rgba(79, 180, 255, 0.4); transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.2s ease; } .ds-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(79, 180, 255, 0.4); filter: brightness(1.1); } .ds-btn-primary:focus-visible { outline: 3px solid rgba(246, 248, 255, 0.85); outline-offset: 3px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Supporting action for GitHub Releases, TestFlight, README, or manual paths.",
+      "html": "<button class=\"ds-btn-secondary\">View GitHub Releases</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--border, rgba(140, 166, 219, 0.15)); border-radius: 12px; background: rgba(255, 255, 255, 0.05); color: var(--text, #f6f8ff); padding: 0.85rem 1.75rem; font: 600 1rem/1.2 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background 0.2s ease, border-color 0.2s ease; } .ds-btn-secondary:hover { transform: translateY(-2px); background: rgba(255, 255, 255, 0.1); border-color: var(--border-hover, rgba(140, 166, 219, 0.3)); } .ds-btn-secondary:focus-visible { outline: 3px solid var(--accent, #4fb4ff); outline-offset: 3px; }"
+    },
+    {
+      "name": "Feature Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "A compact proof card for a single capture capability.",
+      "html": "<article class=\"ds-card\"><h3>GIF Recording</h3><p>Create animated GIFs with adjustable frame rate and max width for lightweight sharing.</p></article>",
+      "css": ".ds-card { border: 1px solid var(--border, rgba(140, 166, 219, 0.15)); border-radius: 16px; background: var(--bg-elevated, rgba(22, 30, 48, 0.6)); color: var(--text, #f6f8ff); padding: 1.75rem; transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease; } .ds-card:hover { transform: translateY(-4px); border-color: var(--border-hover, rgba(140, 166, 219, 0.3)); background: rgba(30, 41, 59, 0.6); box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1); } .ds-card h3 { margin: 0 0 0.75rem; font: 700 1.25rem/1.25 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; } .ds-card p { margin: 0; color: var(--text-secondary, #a7b1cd); font: 400 0.95rem/1.6 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }"
+    },
+    {
+      "name": "Platform Tabs",
+      "kind": "custom",
+      "refersTo": "nav-pill",
+      "description": "The native segmented-control pattern for choosing macOS or Windows.",
+      "html": "<div class=\"ds-platform-tabs\" role=\"tablist\" aria-label=\"Choose platform\"><button class=\"ds-platform-tab is-active\" type=\"button\">macOS</button><button class=\"ds-platform-tab\" type=\"button\">Windows</button></div>",
+      "css": ".ds-platform-tabs { display: inline-grid; grid-template-columns: repeat(2, minmax(160px, 1fr)); gap: 0.3rem; border: 1px solid var(--border-hover, rgba(140, 166, 219, 0.3)); border-radius: 16px; padding: 0.3rem; background: rgba(16, 24, 42, 0.75); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04); } .ds-platform-tab { border: 1px solid transparent; border-radius: 12px; background: transparent; color: var(--text-secondary, #a7b1cd); padding: 0.7rem 1.6rem; font: 600 1.05rem/1.2 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; cursor: pointer; transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease; } .ds-platform-tab:hover { color: var(--text, #f6f8ff); background: rgba(255, 255, 255, 0.04); } .ds-platform-tab.is-active { color: var(--bg, #080b14); border-color: rgba(255, 255, 255, 0.35); background: var(--accent, #4fb4ff); box-shadow: 0 4px 14px rgba(79, 180, 255, 0.4); } .ds-platform-tab:focus-visible { outline: 3px solid var(--accent, #4fb4ff); outline-offset: 3px; }"
+    },
+    {
+      "name": "Command Line",
+      "kind": "custom",
+      "refersTo": "command-chip",
+      "description": "Copyable install command treatment for Homebrew and winget.",
+      "html": "<div class=\"ds-command-line\"><code>winget install Refractored.TinyClips</code><button type=\"button\">Copy</button></div>",
+      "css": ".ds-command-line { display: flex; align-items: center; gap: 0.55rem; } .ds-command-line code { flex: 1; min-width: 0; overflow-x: auto; border: 1px solid var(--border-hover, rgba(140, 166, 219, 0.3)); border-radius: 10px; background: rgba(79, 180, 255, 0.1); color: var(--code-text, #dce9ff); padding: 0.5rem 0.65rem; font-size: 0.86rem; } .ds-command-line button { border: 1px solid var(--border, rgba(140, 166, 219, 0.15)); border-radius: 10px; background: rgba(255, 255, 255, 0.06); color: var(--text, #f6f8ff); padding: 0.45rem 0.7rem; font: 600 0.8rem/1.2 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; cursor: pointer; transition: background 0.2s ease, border-color 0.2s ease; white-space: nowrap; } .ds-command-line button:hover { border-color: var(--border-hover, rgba(140, 166, 219, 0.3)); background: rgba(255, 255, 255, 0.12); } .ds-command-line button:focus-visible { outline: 3px solid var(--accent, #4fb4ff); outline-offset: 3px; }"
+    },
+    {
+      "name": "Media Frame",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Rounded product-image frame with subtle capture glow.",
+      "html": "<figure class=\"ds-media-frame\"><div class=\"ds-media-placeholder\">Tiny Clips screenshot</div></figure>",
+      "css": ".ds-media-frame { margin: 0; border: 1px solid var(--border, rgba(140, 166, 219, 0.15)); border-radius: 20px; background: rgba(255, 255, 255, 0.05); padding: 10px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1), 0 0 80px rgba(79, 180, 255, 0.08); transition: transform 0.5s ease; } .ds-media-frame:hover { transform: scale(1.02); } .ds-media-placeholder { display: grid; place-items: center; min-height: 220px; border: 1px solid rgba(0, 0, 0, 0.2); border-radius: 12px; background: linear-gradient(135deg, rgba(79, 180, 255, 0.16), rgba(8, 11, 20, 0.9)); color: var(--text, #f6f8ff); font: 700 1rem/1.4 Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Pocket Capture Studio",
+    "overview": "Tiny Clips should feel like a compact creative tool sitting one click away: blue-lit, quiet, and immediately useful. The interface is dark because the product lives around screen capture and media work; the site should feel comfortable beside a Mac menu bar, a Windows tray, a video timeline, or a screenshot editor without turning into a theatrical developer console.\n\nThe system uses a focused cool palette, product imagery, rounded native-feeling controls, and restrained glow to communicate speed and capability. It rejects bloated enterprise SaaS marketing: no vague productivity murals, no fake metrics, no endless decorative feature grids, and no design moves that make a sub-5 MB utility feel like a subscription platform.",
+    "keyCharacteristics": [
+      "Dark, blue-lit surfaces that make screenshots and video assets feel native.",
+      "Compact controls with clear platform choices and copyable install commands.",
+      "Ambient elevation: borders, tonal layers, and glow rather than heavy drop shadows.",
+      "Direct product proof through real app imagery, demo video, and exact install paths.",
+      "Creator-friendly clarity without developer-tool costume."
+    ],
+    "rules": [
+      { "name": "The One Blue Rule", "body": "Capture Blue is the only saturated accent. Do not introduce a second accent hue for variety; use contrast, spacing, product imagery, or copy hierarchy instead.", "section": "colors" },
+      { "name": "The Proof Over Decoration Rule", "body": "Blue glow must attach to something functional: a button, selected tab, screenshot frame, or active state. Decorative glow without product meaning is forbidden.", "section": "colors" },
+      { "name": "The Native Utility Rule", "body": "Type should read like a polished native app, not a campaign poster. Avoid oversized display theatrics and keep copy scannable.", "section": "typography" },
+      { "name": "The Sparse Label Rule", "body": "One or two uppercase labels can orient the page; using them as section scaffolding across the whole site is forbidden.", "section": "typography" },
+      { "name": "The Lift On Intent Rule", "body": "Flat tonal surfaces are the default. Strong shadow, scale, and glow should appear only for interaction, media emphasis, or selected state.", "section": "elevation" },
+      { "name": "The No Arbitrary Z Rule", "body": "Keep layering semantic: sticky header, lightbox overlay, lightbox content. Replace arbitrary values like `999` with a named z-index scale when touching related CSS.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep the site as lean as the product: every section needs concrete proof, a platform decision, or an install action.",
+      "Do use Capture Blue for action, selected state, and product proof; keep it rare enough to matter.",
+      "Do preserve real screenshots, videos, and app imagery as the main brand material.",
+      "Do write install and trust copy with exact platform details: Mac App Store, Homebrew, TestFlight, manual download, winget, GitHub Releases.",
+      "Do maintain WCAG 2.2 AA contrast, keyboard-friendly tab controls, visible focus states, and reduced-motion alternatives."
+    ],
+    "donts": [
+      "Don't make Tiny Clips look like bloated enterprise SaaS marketing.",
+      "Don't ship generic AI landing-page polish: gradient-text hero effects, fake metrics, decorative glass cards, repeated tiny uppercase section labels, or endless identical feature grids.",
+      "Don't over-technicalize the brand. Command-line install paths are useful affordances, not the entire personality.",
+      "Don't add side-stripe borders, arbitrary z-index values, or purely decorative glow.",
+      "Don't introduce a second accent hue unless the product itself gains a real semantic need for it."
+    ]
+  }
+}
