@@ -1,20 +1,59 @@
-const year = document.getElementById('year');
-if (year) {
-  year.textContent = String(new Date().getFullYear());
-}
+/* Tiny Clips site behaviour: platform detection, install tabs, copy buttons,
+   mobile nav, active nav tracking, and the gallery lightbox. */
+(() => {
+  'use strict';
 
-const detectPlatform = () => {
-  const platform = (navigator.userAgentData?.platform || navigator.platform || navigator.userAgent || '').toLowerCase();
-  if (platform.includes('win')) {
-    return 'windows';
+  const year = document.getElementById('year');
+  if (year) {
+    year.textContent = String(new Date().getFullYear());
   }
-  return 'macos';
-};
 
-const platformTabs = document.querySelectorAll('.platform-tab');
-const platformPanels = document.querySelectorAll('.platform-panel');
+  const STORE_URLS = {
+    windows: 'https://apps.microsoft.com/detail/9ndt5p7lcjwg?cid=DevShareMCLPCS',
+    macos: 'https://apps.apple.com/us/app/tiny-clips/id6759208660?mt=12',
+  };
 
-if (platformTabs.length > 0 && platformPanels.length > 0) {
+  const detectPlatform = () => {
+    const ua = navigator.userAgent || '';
+    const platform = (navigator.userAgentData?.platform || navigator.platform || '').toLowerCase();
+    if (platform.includes('win') || /windows/i.test(ua)) {
+      return 'windows';
+    }
+    if (platform.includes('mac') || /macintosh|mac os x/i.test(ua)) {
+      return 'macos';
+    }
+    return null;
+  };
+
+  const detected = detectPlatform();
+  const preferred = detected || 'windows';
+  document.documentElement.dataset.platform = preferred;
+
+  /* ---- Hero CTA ordering: put the visitor's platform first ---- */
+  const ctaGroup = document.querySelector('[data-platform-ctas]');
+  if (ctaGroup) {
+    const ctas = Array.from(ctaGroup.querySelectorAll('[data-platform-cta]'));
+    ctas.forEach((cta) => {
+      const isPrimary = cta.dataset.platformCta === preferred;
+      cta.classList.toggle('is-secondary', !isPrimary);
+      if (isPrimary) {
+        ctaGroup.prepend(cta);
+      }
+    });
+  }
+
+  document.querySelectorAll('[data-store-link]').forEach((link) => {
+    if (detected && STORE_URLS[detected]) {
+      link.href = STORE_URLS[detected];
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+    }
+  });
+
+  /* ---- Install platform tabs ---- */
+  const platformTabs = Array.from(document.querySelectorAll('.platform-tab'));
+  const platformPanels = Array.from(document.querySelectorAll('.platform-panel'));
+
   const selectPlatform = (platform) => {
     platformTabs.forEach((tab) => {
       const isActive = tab.dataset.platform === platform;
@@ -22,7 +61,6 @@ if (platformTabs.length > 0 && platformPanels.length > 0) {
       tab.setAttribute('aria-selected', String(isActive));
       tab.setAttribute('tabindex', isActive ? '0' : '-1');
     });
-
     platformPanels.forEach((panel) => {
       const isActive = panel.dataset.platform === platform;
       panel.classList.toggle('is-active', isActive);
@@ -30,219 +68,182 @@ if (platformTabs.length > 0 && platformPanels.length > 0) {
     });
   };
 
-  const focusPlatformByOffset = (currentTab, offset) => {
-    const tabs = Array.from(platformTabs);
-    const currentIndex = tabs.indexOf(currentTab);
-    const nextIndex = (currentIndex + offset + tabs.length) % tabs.length;
-    const nextTab = tabs[nextIndex];
-    const platform = nextTab.dataset.platform || 'macos';
-    selectPlatform(platform);
-    nextTab.focus();
-  };
+  if (platformTabs.length && platformPanels.length) {
+    selectPlatform(preferred);
 
-  const detectedPlatform = detectPlatform();
-  selectPlatform(detectedPlatform);
-
-  platformTabs.forEach((tab) => {
-    tab.addEventListener('click', () => {
-      const platform = tab.dataset.platform || 'macos';
-      selectPlatform(platform);
-    });
-
-    tab.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-        event.preventDefault();
-        focusPlatformByOffset(tab, 1);
-      }
-
-      if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-        event.preventDefault();
-        focusPlatformByOffset(tab, -1);
-      }
-
-      if (event.key === 'Home') {
-        event.preventDefault();
-        const firstTab = platformTabs[0];
-        selectPlatform(firstTab.dataset.platform || 'macos');
-        firstTab.focus();
-      }
-
-      if (event.key === 'End') {
-        event.preventDefault();
-        const lastTab = platformTabs[platformTabs.length - 1];
-        selectPlatform(lastTab.dataset.platform || 'windows');
-        lastTab.focus();
-      }
-    });
-  });
-
-  document.querySelectorAll('[data-select-platform]').forEach((link) => {
-    link.addEventListener('click', () => {
-      const platform = link.dataset.selectPlatform || 'macos';
-      selectPlatform(platform);
-    });
-  });
-}
-
-const copyCommandButtons = document.querySelectorAll('.copy-command-btn[data-copy-command]');
-
-if (copyCommandButtons.length > 0) {
-  const setTemporaryButtonState = (button, text, className = '') => {
-    const originalText = button.dataset.originalLabel || 'Copy';
-    button.textContent = text;
-    button.classList.toggle('is-copied', className === 'is-copied');
-
-    window.setTimeout(() => {
-      button.textContent = originalText;
-      button.classList.remove('is-copied');
-    }, 1500);
-  };
-
-  copyCommandButtons.forEach((button) => {
-    button.dataset.originalLabel = button.textContent.trim() || 'Copy';
-
-    button.addEventListener('click', async () => {
-      const commandText = button.dataset.copyCommand || '';
-      if (!commandText) {
-        return;
-      }
-
-      try {
-        if (navigator.clipboard?.writeText) {
-          await navigator.clipboard.writeText(commandText);
-        } else {
-          const helper = document.createElement('textarea');
-          helper.value = commandText;
-          helper.setAttribute('readonly', '');
-          helper.style.position = 'absolute';
-          helper.style.left = '-9999px';
-          document.body.append(helper);
-          helper.select();
-          document.execCommand('copy');
-          helper.remove();
+    platformTabs.forEach((tab, index) => {
+      tab.addEventListener('click', () => selectPlatform(tab.dataset.platform));
+      tab.addEventListener('keydown', (event) => {
+        let next = null;
+        if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % platformTabs.length;
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index - 1 + platformTabs.length) % platformTabs.length;
+        if (event.key === 'Home') next = 0;
+        if (event.key === 'End') next = platformTabs.length - 1;
+        if (next !== null) {
+          event.preventDefault();
+          selectPlatform(platformTabs[next].dataset.platform);
+          platformTabs[next].focus();
         }
-        setTemporaryButtonState(button, 'Copied', 'is-copied');
-      } catch (error) {
-        setTemporaryButtonState(button, 'Copy failed');
+      });
+    });
+
+    document.querySelectorAll('[data-select-platform]').forEach((link) => {
+      link.addEventListener('click', () => selectPlatform(link.dataset.selectPlatform));
+    });
+  }
+
+  /* ---- Copy-to-clipboard buttons ---- */
+  const copyText = async (text) => {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+    const helper = document.createElement('textarea');
+    helper.value = text;
+    helper.setAttribute('readonly', '');
+    helper.style.position = 'fixed';
+    helper.style.opacity = '0';
+    document.body.append(helper);
+    helper.select();
+    document.execCommand('copy');
+    helper.remove();
+  };
+
+  document.querySelectorAll('.copy-command-btn[data-copy-command]').forEach((button) => {
+    const original = button.textContent.trim() || 'Copy';
+    let timer = 0;
+    button.addEventListener('click', async () => {
+      try {
+        await copyText(button.dataset.copyCommand || '');
+        button.textContent = 'Copied';
+        button.classList.add('is-copied');
+      } catch {
+        button.textContent = 'Select & copy';
       }
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        button.textContent = original;
+        button.classList.remove('is-copied');
+      }, 1600);
     });
   });
-}
 
+  /* ---- Mobile navigation ---- */
+  const navToggle = document.querySelector('.nav-toggle');
+  const primaryNav = document.getElementById('primary-nav');
+  if (navToggle && primaryNav) {
+    const setOpen = (open) => {
+      navToggle.setAttribute('aria-expanded', String(open));
+      navToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      primaryNav.classList.toggle('is-open', open);
+      document.body.classList.toggle('is-nav-open', open);
+    };
+    navToggle.addEventListener('click', () => setOpen(navToggle.getAttribute('aria-expanded') !== 'true'));
+    primaryNav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && primaryNav.classList.contains('is-open')) {
+        setOpen(false);
+        navToggle.focus();
+      }
+    });
+    window.matchMedia('(min-width: 901px)').addEventListener('change', (event) => {
+      if (event.matches) setOpen(false);
+    });
+  }
 
-const galleryGrid = document.querySelector('.gallery-grid');
+  /* ---- Active section highlighting ---- */
+  const navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+  const sections = navLinks.map((link) => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+  if (sections.length && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          navLinks.forEach((link) => link.classList.toggle('is-active', link.getAttribute('href') === `#${entry.target.id}`));
+        });
+      },
+      { rootMargin: '-40% 0px -55% 0px' }
+    );
+    sections.forEach((section) => observer.observe(section));
+  }
 
-if (galleryGrid) {
-  let previouslyFocusedElement = null;
-  const lightbox = document.createElement('div');
-  lightbox.className = 'gallery-lightbox';
-  lightbox.setAttribute('aria-hidden', 'true');
-  lightbox.setAttribute('role', 'dialog');
-  lightbox.setAttribute('aria-modal', 'true');
-  lightbox.setAttribute('aria-label', 'Enlarged product screenshot');
-  lightbox.setAttribute('tabindex', '-1');
+  /* ---- Gallery lightbox ---- */
+  const galleryGrid = document.querySelector('.gallery-grid');
+  if (galleryGrid) {
+    let previouslyFocused = null;
 
-  const closeButton = document.createElement('button');
-  closeButton.className = 'gallery-lightbox-close';
-  closeButton.type = 'button';
-  closeButton.setAttribute('aria-label', 'Close enlarged image');
-  closeButton.textContent = '×';
+    const lightbox = document.createElement('div');
+    lightbox.className = 'gallery-lightbox';
+    lightbox.setAttribute('role', 'dialog');
+    lightbox.setAttribute('aria-modal', 'true');
+    lightbox.setAttribute('aria-label', 'Enlarged screenshot');
+    lightbox.hidden = true;
 
-  const lightboxImage = document.createElement('img');
-  lightboxImage.className = 'gallery-lightbox-image';
-  lightboxImage.alt = '';
+    const closeButton = document.createElement('button');
+    closeButton.className = 'gallery-lightbox-close';
+    closeButton.type = 'button';
+    closeButton.setAttribute('aria-label', 'Close enlarged image');
+    closeButton.textContent = '×';
 
-  lightbox.append(closeButton, lightboxImage);
-  document.body.append(lightbox);
+    const image = document.createElement('img');
+    image.className = 'gallery-lightbox-image';
+    image.alt = '';
 
-  const closeLightbox = () => {
-    lightbox.classList.remove('is-open');
-    lightbox.setAttribute('aria-hidden', 'true');
-    lightboxImage.removeAttribute('src');
-    document.body.classList.remove('is-lightbox-open');
-    if (previouslyFocusedElement instanceof HTMLElement) {
-      previouslyFocusedElement.focus();
-    }
-  };
+    const caption = document.createElement('p');
+    caption.className = 'gallery-lightbox-caption';
 
-  const openLightbox = (image) => {
-    previouslyFocusedElement = document.activeElement;
-    lightboxImage.src = image.getAttribute('src') || '';
-    lightboxImage.alt = image.alt;
-    lightbox.classList.add('is-open');
-    lightbox.setAttribute('aria-hidden', 'false');
-    document.body.classList.add('is-lightbox-open');
-    closeButton.focus();
-  };
+    lightbox.append(closeButton, image, caption);
+    document.body.append(lightbox);
 
-  const galleryItems = galleryGrid.querySelectorAll('.gallery-item');
-  galleryItems.forEach((item) => {
-    item.setAttribute('tabindex', '0');
-    item.setAttribute('role', 'button');
-    item.setAttribute('aria-label', 'Open image in larger view');
-  });
+    const close = () => {
+      lightbox.classList.remove('is-open');
+      document.body.classList.remove('is-lightbox-open');
+      window.setTimeout(() => {
+        lightbox.hidden = true;
+        image.removeAttribute('src');
+      }, 200);
+      if (previouslyFocused instanceof HTMLElement) previouslyFocused.focus();
+    };
 
-  galleryGrid.addEventListener('click', (event) => {
-    const target = event.target;
-    if (!(target instanceof Element)) {
-      return;
-    }
-
-    const galleryItem = target.closest('.gallery-item');
-    if (!galleryItem) {
-      return;
-    }
-
-    const image = galleryItem.querySelector('img');
-    if (image) {
-      openLightbox(image);
-    }
-  });
-
-  galleryGrid.addEventListener('keydown', (event) => {
-    if (event.key !== 'Enter' && event.key !== ' ') {
-      return;
-    }
-
-    const target = event.target;
-    if (!(target instanceof Element)) {
-      return;
-    }
-
-    const galleryItem = target.closest('.gallery-item');
-    if (!galleryItem) {
-      return;
-    }
-
-    const image = galleryItem.querySelector('img');
-    if (image) {
-      event.preventDefault();
-      openLightbox(image);
-    }
-  });
-
-  closeButton.addEventListener('click', closeLightbox);
-
-  lightbox.addEventListener('click', (event) => {
-    if (event.target === lightbox) {
-      closeLightbox();
-    }
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (!lightbox.classList.contains('is-open')) {
-      return;
-    }
-
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      closeLightbox();
-      return;
-    }
-
-    if (event.key === 'Tab') {
-      event.preventDefault();
+    const open = (figure) => {
+      const source = figure.querySelector('img');
+      if (!source) return;
+      previouslyFocused = document.activeElement;
+      image.src = source.currentSrc || source.src;
+      image.alt = source.alt;
+      caption.textContent = figure.querySelector('figcaption')?.textContent || source.alt;
+      lightbox.hidden = false;
+      requestAnimationFrame(() => lightbox.classList.add('is-open'));
+      document.body.classList.add('is-lightbox-open');
       closeButton.focus();
-    }
-  });
-}
+    };
+
+    galleryGrid.querySelectorAll('.gallery-item').forEach((item) => {
+      item.setAttribute('tabindex', '0');
+      item.setAttribute('role', 'button');
+      item.setAttribute('aria-label', `Enlarge: ${item.querySelector('figcaption')?.textContent || 'screenshot'}`);
+      item.addEventListener('click', () => open(item));
+      item.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          open(item);
+        }
+      });
+    });
+
+    closeButton.addEventListener('click', close);
+    lightbox.addEventListener('click', (event) => {
+      if (event.target === lightbox) close();
+    });
+    document.addEventListener('keydown', (event) => {
+      if (lightbox.hidden) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close();
+      } else if (event.key === 'Tab') {
+        event.preventDefault();
+        closeButton.focus();
+      }
+    });
+  }
+})();

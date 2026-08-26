@@ -10,7 +10,7 @@ Tiny Clips is for Mac and Windows users who need to capture, edit, and share scr
 
 ## Product Purpose
 
-The website exists to help visitors understand Tiny Clips, trust it, and download the right version for their platform. Success means a visitor can quickly see what Tiny Clips captures, verify that it fits their Mac or Windows workflow, compare install paths, and leave with the app installed or bookmarked for later.
+The website exists to help visitors understand Tiny Clips, trust it, and install it from the Microsoft Store (Windows) or Mac App Store (macOS) — the preferred, auto-updating paths — with winget, Homebrew, TestFlight, and GitHub Releases available for power users. Success means a visitor can see what Tiny Clips captures, try the capture → polish → share loop in the on-page simulator, confirm feature parity between Mac and Windows, and leave with the app installed.
 
 ## Brand Personality
 
@@ -27,6 +27,8 @@ Avoid bloated enterprise SaaS marketing: vague productivity claims, inflated met
 - Keep platform choice clear, fast, and respectful of Mac and Windows conventions.
 - Make every section earn its place; the site should feel as lean as the app.
 - Balance creator friendliness with technical trust, especially around installs and permissions.
+- Let visitors experience the product before installing: the interactive demo should feel like the real app, not a slideshow.
+- Keep Windows and Mac as equals — both stores, both feature lists, both screenshots — and detect the visitor''s platform to put theirs first.
 
 ## Accessibility & Inclusion
 

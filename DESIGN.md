@@ -1,14 +1,18 @@
 ---
 name: Tiny Clips Website
-description: Static marketing website for Tiny Clips, a lightweight Mac and Windows screen capture app.
+description: Static marketing website for Tiny Clips, a free, lightweight Windows and Mac screen capture app available on the Microsoft Store and Mac App Store.
 colors:
-  background: "#080b14"
-  background-soft: "#10182a"
-  background-elevated: "#161e3099"
+  background: "#070a14"
+  background-soft: "#0b1020"
+  background-elevated: "#121a30"
   text: "#f6f8ff"
   text-secondary: "#a7b1cd"
   accent: "#4fb4ff"
-  accent-glow: "#4fb4ff66"
+  accent-2: "#7a6cf7"
+  brand-gradient: "linear-gradient(135deg, #3d8bff 0%, #6a4ff0 100%)"
+  accent-glow: "#4fb4ff59"
+  recording: "#ff4d5e"
+  success: "#3ddc97"
   border: "#8ca6db26"
   border-hover: "#8ca6db4d"
   code-text: "#dce9ff"
@@ -128,9 +132,11 @@ The palette is a restrained dark capture-studio palette: near-black blue surface
 
 ### Named Rules
 
-**The One Blue Rule.** Capture Blue is the only saturated accent. Do not introduce a second accent hue for variety; use contrast, spacing, product imagery, or copy hierarchy instead.
+**The One Blue Rule (with the icon gradient).** Capture Blue is the only saturated UI accent. The single exception is the Brand Gradient (blue → violet) lifted from the app icon itself: use it for the hero highlight word, the recommended-install card wash, and the final CTA card — never for body UI, buttons, or repeated decoration. Recording red and success green exist only as semantic state colors (record dot, copied state).
 
 **The Proof Over Decoration Rule.** Blue glow must attach to something functional: a button, selected tab, screenshot frame, or active state. Decorative glow without product meaning is forbidden.
+
+**The Capture-Corner Rule.** The signature motif is the four corner brackets of a capture region (`.capture-frame`). Reserve it for product media (hero video, demo video) and the final CTA card so it keeps meaning ""this is the capture""; do not frame ordinary cards with it.
 
 ## 3. Typography
 
@@ -205,6 +211,17 @@ Platform and install-method tabs are the signature interaction pattern. They sho
 ### Product Media Frames
 
 Hero video, gallery items, and Clips Manager imagery sit inside rounded, bordered frames with restrained glow. Product imagery is mandatory on this brand surface; do not replace it with decorative abstract panels.
+### Store Badges
+
+Official Microsoft Store and Mac App Store badges are the primary download affordance. They appear in the hero (visitor's detected platform first), inside each install panel, and in the final CTA. Never redraw or recolor them; keep them at 52–58px tall with a subtle lift on hover. Terminal installs (winget, Homebrew), TestFlight, and GitHub Releases are secondary options beside the badge, not competitors to it.
+
+### Interactive Demo
+
+The "Try Tiny Clips" section (`demo.js` / `demo.css`) is a simulated desktop, not a marketing illustration. It must mirror real product behavior: tray flyout on Windows, menu bar menu on Mac, Region/Screen/Window picker with R/S/W keys, countdown, editor with the real tool set, trimmer, and library. New app features that are user-visible should be reflected here. Keep it self-contained (no frameworks), keyboard-operable, and respectful of `prefers-reduced-motion`.
+
+### Comparison and Shortcut Tables
+
+Tables use a dark translucent wrap with hairline row borders and uppercase column headers. Checks are small blue circles. These are proof surfaces: keep them factual and aligned with the app's README and changelog.
 
 ## 6. Do's and Don'ts
 
@@ -212,12 +229,12 @@ Hero video, gallery items, and Clips Manager imagery sit inside rounded, bordere
 - **Do** keep the site as lean as the product: every section needs concrete proof, a platform decision, or an install action.
 - **Do** use Capture Blue for action, selected state, and product proof; keep it rare enough to matter.
 - **Do** preserve real screenshots, videos, and app imagery as the main brand material.
-- **Do** write install and trust copy with exact platform details: Mac App Store, Homebrew, TestFlight, manual download, winget, GitHub Releases.
+- **Do** lead every download moment with the Microsoft Store (Windows) or Mac App Store (macOS); keep winget, Homebrew, TestFlight, and GitHub Releases one step behind with exact commands.
 - **Do** maintain WCAG 2.2 AA contrast, keyboard-friendly tab controls, visible focus states, and reduced-motion alternatives.
 
 ### Don't:
 - **Don't** make Tiny Clips look like bloated enterprise SaaS marketing.
-- **Don't** ship generic AI landing-page polish: gradient-text hero effects, fake metrics, decorative glass cards, repeated tiny uppercase section labels, or endless identical feature grids.
+- **Don't** ship generic AI landing-page polish: fake metrics, decorative glass cards, repeated tiny uppercase section labels, or endless identical feature grids. The single gradient word in the hero is the brand icon's gradient, not a template effect; do not add more.
 - **Don't** over-technicalize the brand. Command-line install paths are useful affordances, not the entire personality.
 - **Don't** add side-stripe borders, arbitrary z-index values, or purely decorative glow.
 - **Don't** introduce a second accent hue unless the product itself gains a real semantic need for it.
