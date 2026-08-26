@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://tinyclips.app/</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://tinyclips.app/assets/og-image.png</image:loc>
+      <image:title>Tiny Clips for Windows and macOS</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://tinyclips.app/assets/windows-screenshot-editor.png</image:loc>
+      <image:title>Tiny Clips for Windows screenshot editor</image:title>
+    </image:image>
+    <image:image>
+      <image:loc>https://tinyclips.app/assets/clips-manager.jpg</image:loc>
+      <image:title>Clips Manager in Tiny Clips for Mac</image:title>
+    </image:image>
   </url>
   <url>
     <loc>https://tinyclips.app/privacy.html</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://tinyclips.app/terms.html</loc>
+    <lastmod>2026-08-26</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>

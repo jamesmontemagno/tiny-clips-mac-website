@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>End User License Agreement — Tiny Clips for Windows</title>
-    <meta name="description" content="End User License Agreement for the Tiny Clips Windows application from Refractored LLC." />
+    <title>End User License Agreement — Tiny Clips</title>
+    <meta name="description" content="End User License Agreement for Tiny Clips on Windows and macOS from Refractored LLC." />
     <meta name="author" content="Refractored LLC" />
-    <meta name="theme-color" content="#080b14" />
+    <meta name="theme-color" content="#070a14" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://tinyclips.app/terms.html" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://tinyclips.app/terms.html" />
-    <meta property="og:title" content="End User License Agreement — Tiny Clips for Windows" />
-    <meta property="og:description" content="End User License Agreement for the Tiny Clips Windows application from Refractored LLC." />
+    <meta property="og:title" content="End User License Agreement — Tiny Clips" />
+    <meta property="og:description" content="End User License Agreement for Tiny Clips on Windows and macOS from Refractored LLC." />
     <meta property="og:image" content="https://tinyclips.app/assets/og-image.png" />
 
     <!-- Icons -->
@@ -20,44 +20,58 @@
     <link rel="icon" type="image/png" sizes="256x256" href="./assets/app-icon-256.png" />
     <link rel="apple-touch-icon" href="./assets/app-icon-256.png" />
 
+    <link rel="manifest" href="./site.webmanifest" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
       <div class="container header-content">
-        <a class="brand" href="./index.html">
-          <img src="./assets/app-icon-128.png" alt="Tiny Clips icon" width="32" height="32" decoding="async" />
+        <a class="brand" href="./index.html" aria-label="Tiny Clips home">
+          <img src="./assets/app-icon-128.png" alt="" width="32" height="32" decoding="async" />
           <span>Tiny Clips</span>
         </a>
-        <nav>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav class="primary-nav" id="primary-nav" aria-label="Primary">
           <ul class="nav-links">
+            <li><a href="./index.html#try">Try it</a></li>
             <li><a href="./index.html#features">Features</a></li>
-            <li><a href="./index.html#settings">Settings</a></li>
-            <li><a href="./index.html#video">Video</a></li>
-            <li><a href="./index.html#gallery">Gallery</a></li>
-            <li><a href="./index.html#download">Download</a></li>
+            <li><a href="./index.html#compare">Mac vs Windows</a></li>
+            <li><a href="./index.html#gallery">Screens</a></li>
+            <li><a href="./index.html#faq">FAQ</a></li>
           </ul>
+          <a class="btn btn-primary btn-sm nav-cta" href="./index.html#download" data-store-link>Download free</a>
         </nav>
       </div>
     </header>
 
-    <main>
+    <main id="main-content" tabindex="-1">
       <section class="section">
         <div class="container legal-content">
           <h1 class="legal-title">End User License Agreement</h1>
-          <p class="legal-updated">Last updated: July 2026</p>
+          <p class="legal-updated">Last updated: August 2026</p>
 
           <p>
             This End User License Agreement ("Agreement") is between you and Refractored LLC ("Refractored") and governs
-            your use of the Tiny Clips application for Windows, including any updates provided by Refractored
+            your use of the Tiny Clips application for Windows and macOS, including any updates provided by Refractored
             (collectively, the "Application"). By installing or using the Application, you agree to this Agreement. If
             you do not agree, do not install or use the Application.
+          </p>
+          <p>
+            If you obtained the Application from the Microsoft Store or the Mac App Store, the terms of that store also
+            apply to your purchase and download; where those terms conflict with this Agreement regarding the store's own
+            services, the store terms control. The Application's source code is separately available under the
+            <a href="https://github.com/jamesmontemagno/tiny-clips/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">MIT License</a>
+            on GitHub; that license governs the source code, and this Agreement governs the packaged Application.
           </p>
 
           <h2>1. Scope of License</h2>
           <p>
             Subject to this Agreement, Refractored grants you a limited, non-exclusive, non-transferable, revocable license
-            to install and use the Application on Windows devices that you own or control for your personal or internal
+            to install and use the Application on Windows and Apple devices that you own or control for your personal or internal
             business purposes. You may make one backup copy solely for archival or recovery purposes. This Agreement also
             applies to updates that replace or supplement the Application unless an update is accompanied by separate
             terms.
@@ -74,7 +88,7 @@
 
           <h2>2. Data Use</h2>
           <p>
-            The Application processes your captures and settings locally on your Windows device. Refractored does not
+            The Application processes your captures and settings locally on your device. Refractored does not
             collect, store, transmit, or share your personal information or captured media through the Application.
             Details about the Application's data practices are provided in the
             <a href="./privacy.html">Privacy Policy</a>. Services you choose to access outside the Application, including
@@ -168,17 +182,26 @@
 
     <footer class="site-footer">
       <div class="container footer-content">
-        <p>© 2026 Refractored LLC</p>
-        <p class="footer-tool-note">
-          Find more tiny tools like this at
-          <a href="https://www.tinytooltown.com/" target="_blank" rel="noopener noreferrer">Tiny Tool Town</a>.
-        </p>
-        <nav class="footer-links">
-          <a href="./privacy.html">Privacy Policy</a>
-          <a href="./terms.html">Terms of Use</a>
+        <div class="footer-brand">
+          <img src="./assets/app-icon-128.png" alt="" width="28" height="28" decoding="async" />
+          <div>
+            <p>© <span id="year">2026</span> Refractored LLC</p>
+            <p class="footer-tool-note">
+              Find more tiny tools like this at
+              <a href="https://www.tinytooltown.com/" target="_blank" rel="noopener noreferrer">Tiny Tool Town</a>.
+            </p>
+          </div>
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="https://apps.microsoft.com/detail/9ndt5p7lcjwg?cid=DevShareMCLPCS" target="_blank" rel="noopener noreferrer">Microsoft Store</a>
+          <a href="https://apps.apple.com/us/app/tiny-clips/id6759208660?mt=12" target="_blank" rel="noopener noreferrer">Mac App Store</a>
           <a href="https://github.com/jamesmontemagno/tiny-clips" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="./privacy.html">Privacy</a>
+          <a href="./terms.html">Terms</a>
         </nav>
       </div>
     </footer>
+
+    <script src="./script.js" defer></script>
   </body>
 </html>
