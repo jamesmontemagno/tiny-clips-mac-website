@@ -1,0 +1,241 @@
+import { test, expect } from '@playwright/test';
+
+const STORE_WINDOWS = 'https://apps.microsoft.com/detail/9ndt5p7lcjwg';
+const STORE_MAC = 'https://apps.apple.com/us/app/tiny-clips/id6759208660';
+
+/** Collect uncaught errors and console errors for the lifetime of a page. */
+const watchErrors = (page) => {
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(`pageerror: ${error.message}`));
+  page.on('console', (message) => {
+    if (message.type() === 'error') errors.push(`console: ${message.text()}`);
+  });
+  return errors;
+};
+
+const gotoHome = async (page) => {
+  await page.goto('/index.html', { waitUntil: 'load' });
+  // The hero video loops forever, so never wait for networkidle. Smooth scrolling
+  // makes bounding boxes stale mid-scroll, so turn it off for coordinate input.
+  await page.addStyleTag({ content: 'html{scroll-behavior:auto!important}' });
+};
+
+test.describe('pages', () => {
+  for (const path of ['/index.html', '/privacy.html', '/terms.html', '/404.html']) {
+    test(`${path} loads without errors`, async ({ page }) => {
+      const errors = watchErrors(page);
+      const response = await page.goto(path, { waitUntil: 'load' });
+      expect(response?.ok()).toBeTruthy();
+      await expect(page.locator('main')).toBeVisible();
+      expect(errors).toEqual([]);
+    });
+  }
+
+  test('homepage SEO and store links are correct', async ({ page }) => {
+    await gotoHome(page);
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://tinyclips.app/');
+    await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', 'https://tinyclips.app/');
+
+    const jsonLd = await page.locator('script[type="application/ld+json"]').allTextContents();
+    const graph = jsonLd.flatMap((text) => JSON.parse(text)['@graph'] ?? [JSON.parse(text)]);
+    const app = graph.find((node) => node['@type'] === 'SoftwareApplication');
+    expect(app).toBeTruthy();
+    expect(app.installUrl.join(' ')).toContain(STORE_WINDOWS);
+    expect(app.installUrl.join(' ')).toContain(STORE_MAC);
+    expect(graph.some((node) => node['@type'] === 'FAQPage')).toBeTruthy();
+
+    expect(await page.locator(`a[href^="${STORE_WINDOWS}"]`).count()).toBeGreaterThanOrEqual(3);
+    expect(await page.locator(`a[href^="${STORE_MAC}"]`).count()).toBeGreaterThanOrEqual(3);
+  });
+
+  test('install tabs switch platforms and copy buttons exist', async ({ page }) => {
+    await gotoHome(page);
+    await page.click('.platform-tab[data-platform="windows"]');
+    await expect(page.locator('#platform-panel-windows')).toBeVisible();
+    await expect(page.locator('#platform-panel-macos')).toBeHidden();
+    await expect(page.locator('#platform-panel-windows code').first()).toHaveText(
+      'winget install Refractored.TinyClips'
+    );
+
+    await page.click('.platform-tab[data-platform="macos"]');
+    await expect(page.locator('#platform-panel-macos')).toBeVisible();
+    await expect(page.locator('#platform-panel-macos .command-line code').first()).toContainText(
+      'brew tap jamesmontemagno/tiny-clips'
+    );
+  });
+
+  test('gallery lightbox opens and closes with Escape', async ({ page }) => {
+    await gotoHome(page);
+    await page.locator('.gallery-item').first().click();
+    const lightbox = page.locator('.gallery-lightbox');
+    await expect(lightbox).toBeVisible();
+    await expect(lightbox.locator('img')).toHaveAttribute('src', /assets\//);
+    await page.keyboard.press('Escape');
+    await expect(lightbox).toBeHidden();
+  });
+
+  test('mobile navigation toggles', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await gotoHome(page);
+    const toggle = page.locator('.nav-toggle');
+    await expect(toggle).toBeVisible();
+    await toggle.click();
+    await expect(page.locator('#primary-nav')).toHaveClass(/is-open/);
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#primary-nav')).not.toHaveClass(/is-open/);
+  });
+});
+
+test.describe('interactive demo', () => {
+  /** Scroll the simulated desktop into view and return its on-screen box plus logical→pixel scale. */
+  const stageBox = async (page) => {
+    await page.evaluate(() => document.querySelector('.demo-stage-outer').scrollIntoView({ block: 'center' }));
+    const box = await page.locator('.demo-stage-outer').boundingBox();
+    return { ...box, scale: box.width / 1000 };
+  };
+
+  const dragOnStage = async (page, from, to) => {
+    const s = await stageBox(page);
+    await page.mouse.move(s.x + from[0] * s.scale, s.y + from[1] * s.scale);
+    await page.mouse.down();
+    await page.mouse.move(s.x + to[0] * s.scale, s.y + to[1] * s.scale, { steps: 6 });
+    await page.mouse.up();
+  };
+
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 1400, height: 1000 });
+    await gotoHome(page);
+    // Keep the sticky header from overlapping the stage during coordinate input.
+    await page.addStyleTag({ content: '.site-header{position:static!important}' });
+  });
+
+  test('Windows: screenshot → region → editor → annotate → save → library', async ({ page }) => {
+    const errors = watchErrors(page);
+    await page.click('.demo-seg button[data-platform="windows"]');
+    await page.click('.demo-tray-btn');
+    await expect(page.locator('.demo-flyout')).toBeVisible();
+    await page.click('.demo-tile:has-text("Screenshot")');
+    await expect(page.locator('.demo-picker')).toBeVisible();
+    await page.keyboard.press('r');
+    await expect(page.locator('.demo-select-layer')).toBeVisible();
+
+    await dragOnStage(page, [60, 120], [400, 330]);
+    const editor = page.locator('.demo-editor');
+    await expect(editor).toBeVisible();
+    await expect(editor.locator('.demo-editor-status')).toContainText('340 × 210 px');
+
+    // Draw an arrow, a rectangle, and a blur redaction.
+    const layer = await page.locator('.demo-anno-layer').boundingBox();
+    await page.mouse.move(layer.x + 30, layer.y + 30);
+    await page.mouse.down();
+    await page.mouse.move(layer.x + 160, layer.y + 120, { steps: 5 });
+    await page.mouse.up();
+    await page.click('.demo-tool[aria-label="Rectangle"]');
+    await page.mouse.move(layer.x + 50, layer.y + 140);
+    await page.mouse.down();
+    await page.mouse.move(layer.x + 220, layer.y + 190, { steps: 5 });
+    await page.mouse.up();
+    await page.click('.demo-tool[aria-label="Redact"]');
+    await page.mouse.move(layer.x + 20, layer.y + 70);
+    await page.mouse.down();
+    await page.mouse.move(layer.x + 150, layer.y + 100, { steps: 5 });
+    await page.mouse.up();
+    await expect(editor.locator('.demo-editor-status')).toContainText('2 annotations');
+    await expect(page.locator('.demo-redact[data-style="blur"]')).toHaveCount(1);
+
+    await page.click('.demo-chip:has-text("16:9")');
+    await expect(editor.locator('.demo-editor-status')).toContainText('export');
+
+    await page.click('.demo-editor-toolbar button:has-text("Save"):not(:has-text("as"))');
+    await expect(editor).toBeHidden();
+    await expect(page.locator('.demo-toast')).toContainText('Screenshot saved');
+
+    await page.click('.demo-toolbar button:has-text("Library")');
+    await expect(page.locator('.demo-library')).toBeVisible();
+    await expect(page.locator('.demo-clip')).toHaveCount(1);
+    await expect(page.locator('.demo-clip-badge')).toHaveText('PNG');
+    expect(errors).toEqual([]);
+  });
+
+  test('Windows: video with webcam + teleprompter → hotkey stop → trimmer', async ({ page }) => {
+    const errors = watchErrors(page);
+    await page.click('.demo-seg button[data-platform="windows"]');
+    await page.click('.demo-tray-btn');
+    await page.click('.demo-tile:has-text("Video")');
+    await page.selectOption('select[aria-label="Countdown"]', '0');
+    await page.keyboard.press('s');
+
+    const setup = page.locator('.demo-setup');
+    await expect(setup).toBeVisible();
+    await setup.locator('.demo-toggle:has-text("Webcam")').click();
+    await setup.locator('.demo-toggle:has-text("Teleprompter")').click();
+    await setup.locator('.demo-btn.is-rec').click();
+
+    await expect(page.locator('.demo-recbar')).toBeVisible();
+    await expect(page.locator('.demo-webcam')).toBeVisible();
+    await expect(page.locator('.demo-teleprompter')).toBeVisible();
+    await page.waitForTimeout(1200);
+    await expect(page.locator('.demo-rec-time')).not.toHaveText('0:00.0');
+
+    await page.keyboard.press('Control+Shift+S');
+    const trimmer = page.locator('.demo-trimmer');
+    await expect(trimmer).toBeVisible({ timeout: 10_000 });
+    await expect(trimmer.locator('.demo-appwin-title')).toContainText('Video Trimmer');
+    await expect(trimmer.locator('.demo-appwin-title')).toContainText('webcam');
+    await trimmer.locator('button:has-text("Save trimmed")').click();
+    await expect(page.locator('.demo-toast')).toContainText('Video saved');
+    expect(errors).toEqual([]);
+  });
+
+  test('Windows: scrolling capture stitches a taller image', async ({ page }) => {
+    const errors = watchErrors(page);
+    await page.click('.demo-seg button[data-platform="windows"]');
+    await page.click('.demo-tray-btn');
+    await page.click('.demo-tile:has-text("Screenshot")');
+    await page.keyboard.press('p');
+    await dragOnStage(page, [470, 130], [940, 420]);
+    await expect(page.locator('.demo-scrollpanel')).toBeVisible();
+    await expect(page.locator('.demo-editor')).toBeVisible({ timeout: 15_000 });
+    const status = await page.locator('.demo-editor-status').textContent();
+    const [, width, height] = status.match(/(\d+) × (\d+) px/);
+    expect(Number(width)).toBe(470);
+    expect(Number(height)).toBeGreaterThan(290);
+    expect(errors).toEqual([]);
+  });
+
+  test('macOS: menu bar → OCR reads on-screen text → Clips Manager', async ({ page }) => {
+    const errors = watchErrors(page);
+    await page.click('.demo-seg button[data-platform="macos"]');
+    await expect(page.locator('.demo-menubar')).toBeVisible();
+    await page.click('.demo-tray-btn');
+    await expect(page.locator('.demo-macmenu')).toBeVisible();
+    await page.click('.demo-macmenu-item:has-text("Copy Text")');
+    await dragOnStage(page, [50, 120], [420, 340]);
+    const ocr = page.locator('.demo-ocr');
+    await expect(ocr).toBeVisible({ timeout: 10_000 });
+    await expect(ocr.locator('pre')).toContainText('Launch checklist');
+    await ocr.locator('button:has-text("Copy text")').click();
+    await expect(page.locator('.demo-toast')).toContainText('Text copied');
+
+    await page.click('.demo-tray-btn');
+    await page.click('.demo-macmenu-item:has-text("Clips Manager")');
+    const library = page.locator('.demo-library');
+    await expect(library).toBeVisible();
+    await expect(library.locator('.demo-appwin-title')).toContainText('Clips Manager');
+    await expect(library.locator('.demo-side-item:has-text("Release")')).toBeVisible();
+    await expect(library.locator('.demo-appwin-title')).not.toContainText('null');
+    expect(errors).toEqual([]);
+  });
+
+  test('Escape cancels a flow and Reset clears clips', async ({ page }) => {
+    await page.click('.demo-seg button[data-platform="windows"]');
+    // Global hotkeys only apply while the pointer is over the demo or focus is inside it.
+    await page.locator('.demo-stage').hover();
+    await page.keyboard.press('Control+Shift+5');
+    await expect(page.locator('.demo-picker')).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('.demo-picker')).toBeHidden();
+    await page.click('.demo-toolbar button:has-text("Reset")');
+    await expect(page.locator('.demo-toast')).toContainText('Demo reset');
+  });
+});

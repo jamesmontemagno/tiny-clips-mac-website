@@ -11,3 +11,9 @@
 
 # Impeccable local cache
 .impeccable/hook.cache.json
+
+# Node / tooling
+node_modules/
+test-results/
+playwright-report/
+

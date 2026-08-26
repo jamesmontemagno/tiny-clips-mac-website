@@ -43,16 +43,13 @@
   --shadow-md: 0 14px 30px -14px rgba(0, 0, 0, 0.5);
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --dur: 180ms;
-
-  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
-
+  --font:
+    'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI Variable', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --mono: ui-monospace, 'Cascadia Code', 'SF Mono', Menlo, Consolas, monospace;
   --focus-ring: 0 0 0 3px rgba(79, 180, 255, 0.45), 0 0 0 6px rgba(7, 10, 20, 0.9);
-
   --z-sticky: 100;
   --z-skip: 200;
   --z-modal: 900;
-
   --container: 1180px;
 }
 
@@ -230,7 +227,10 @@ button {
   font-weight: 600;
   line-height: 1.2;
   text-decoration: none;
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), background var(--dur) var(--ease),
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    background var(--dur) var(--ease),
     border-color var(--dur) var(--ease);
   white-space: nowrap;
 }
@@ -286,7 +286,10 @@ button {
 .store-badge {
   display: inline-flex;
   border-radius: 9px;
-  transition: transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease), opacity var(--dur) var(--ease);
+  transition:
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    opacity var(--dur) var(--ease);
 }
 
 .store-badge img {
@@ -362,7 +365,9 @@ button {
   color: var(--text-2);
   font-weight: 500;
   font-size: 0.95rem;
-  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+  transition:
+    color var(--dur) var(--ease),
+    background var(--dur) var(--ease);
 }
 
 .nav-links a:hover,
@@ -390,7 +395,9 @@ button {
   height: 2px;
   background: var(--text);
   border-radius: 2px;
-  transition: transform var(--dur) var(--ease), top var(--dur) var(--ease);
+  transition:
+    transform var(--dur) var(--ease),
+    top var(--dur) var(--ease);
 }
 
 .nav-toggle-bar:first-child {
@@ -401,12 +408,12 @@ button {
   top: 25px;
 }
 
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:first-child {
+.nav-toggle[aria-expanded='true'] .nav-toggle-bar:first-child {
   top: 21px;
   transform: rotate(45deg);
 }
 
-.nav-toggle[aria-expanded="true"] .nav-toggle-bar:last-child {
+.nav-toggle[aria-expanded='true'] .nav-toggle-bar:last-child {
   top: 21px;
   transform: rotate(-45deg);
 }
@@ -428,7 +435,9 @@ button {
     transform: translateY(-8px);
     opacity: 0;
     pointer-events: none;
-    transition: transform var(--dur) var(--ease), opacity var(--dur) var(--ease);
+    transition:
+      transform var(--dur) var(--ease),
+      opacity var(--dur) var(--ease);
   }
 
   .primary-nav.is-open {
@@ -475,7 +484,7 @@ button {
 }
 
 .hero-backdrop::after {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
   background-image:
@@ -574,7 +583,9 @@ button {
   border-radius: var(--r-lg);
   border: 1px solid var(--border);
   background: var(--bg-2);
-  box-shadow: var(--shadow-lg), 0 0 120px -30px rgba(79, 180, 255, 0.35);
+  box-shadow:
+    var(--shadow-lg),
+    0 0 120px -30px rgba(79, 180, 255, 0.35);
 }
 
 .hero-media-caption {
@@ -732,7 +743,9 @@ button {
   background: transparent;
   color: var(--text-2);
   font-weight: 600;
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  transition:
+    background var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }
 
 .platform-tab .tab-icon {
@@ -772,8 +785,7 @@ button {
   border: 1px solid rgba(79, 180, 255, 0.35);
   background:
     radial-gradient(120% 100% at 0% 0%, rgba(61, 139, 255, 0.18), transparent 55%),
-    radial-gradient(100% 100% at 100% 100%, rgba(106, 79, 240, 0.16), transparent 55%),
-    var(--surface-solid);
+    radial-gradient(100% 100% at 100% 100%, rgba(106, 79, 240, 0.16), transparent 55%), var(--surface-solid);
   box-shadow: var(--shadow-md);
 }
 
@@ -821,7 +833,7 @@ button {
 }
 
 .trust-list li::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0.45em;
@@ -833,7 +845,7 @@ button {
 }
 
 .trust-list li::after {
-  content: "";
+  content: '';
   position: absolute;
   left: 0.3rem;
   top: 0.62em;
@@ -908,7 +920,9 @@ button {
   color: var(--text);
   font-size: 0.8rem;
   font-weight: 600;
-  transition: background var(--dur) var(--ease), color var(--dur) var(--ease);
+  transition:
+    background var(--dur) var(--ease),
+    color var(--dur) var(--ease);
 }
 
 .copy-command-btn:hover {
@@ -936,11 +950,10 @@ button {
 }
 
 .section-demo::before {
-  content: "";
+  content: '';
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(50% 40% at 50% 30%, rgba(61, 139, 255, 0.12), transparent 70%);
+  background: radial-gradient(50% 40% at 50% 30%, rgba(61, 139, 255, 0.12), transparent 70%);
   pointer-events: none;
 }
 
@@ -973,7 +986,10 @@ button {
   border-radius: var(--r-lg);
   border: 1px solid var(--border);
   background: var(--surface);
-  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease), background var(--dur) var(--ease);
+  transition:
+    border-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease),
+    background var(--dur) var(--ease);
 }
 
 .feature-step:hover {
@@ -1029,7 +1045,7 @@ button {
 }
 
 .feature-list li::before {
-  content: "";
+  content: '';
   position: absolute;
   left: 0;
   top: 0.65em;
@@ -1088,9 +1104,7 @@ button {
   padding: clamp(1.5rem, 4vw, 3rem);
   border-radius: var(--r-xl);
   border: 1px solid var(--border);
-  background:
-    radial-gradient(80% 120% at 100% 0%, rgba(106, 79, 240, 0.14), transparent 60%),
-    var(--surface);
+  background: radial-gradient(80% 120% at 100% 0%, rgba(106, 79, 240, 0.14), transparent 60%), var(--surface);
 }
 
 .shortcuts-table-wrap,
@@ -1195,7 +1209,10 @@ tbody td {
   border: 1px solid var(--border);
   background: var(--surface);
   cursor: zoom-in;
-  transition: border-color var(--dur) var(--ease), transform var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  transition:
+    border-color var(--dur) var(--ease),
+    transform var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease);
 }
 
 .gallery-item:hover {
@@ -1261,6 +1278,10 @@ tbody td {
 .gallery-lightbox.is-open {
   opacity: 1;
   pointer-events: auto;
+}
+
+.gallery-lightbox[hidden] {
+  display: none;
 }
 
 .gallery-lightbox-image {
@@ -1418,7 +1439,7 @@ tbody td {
 }
 
 .faq-item summary::after {
-  content: "";
+  content: '';
   position: absolute;
   right: 1.25rem;
   top: 50%;
@@ -1468,8 +1489,7 @@ tbody td {
   border: 1px solid rgba(79, 180, 255, 0.3);
   background:
     radial-gradient(90% 120% at 0% 0%, rgba(61, 139, 255, 0.2), transparent 55%),
-    radial-gradient(80% 120% at 100% 100%, rgba(106, 79, 240, 0.2), transparent 55%),
-    var(--surface-solid);
+    radial-gradient(80% 120% at 100% 100%, rgba(106, 79, 240, 0.2), transparent 55%), var(--surface-solid);
   box-shadow: var(--shadow-lg);
 }
 

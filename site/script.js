@@ -76,7 +76,8 @@
       tab.addEventListener('keydown', (event) => {
         let next = null;
         if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % platformTabs.length;
-        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index - 1 + platformTabs.length) % platformTabs.length;
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowUp')
+          next = (index - 1 + platformTabs.length) % platformTabs.length;
         if (event.key === 'Home') next = 0;
         if (event.key === 'End') next = platformTabs.length - 1;
         if (next !== null) {
@@ -159,7 +160,9 @@
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
-          navLinks.forEach((link) => link.classList.toggle('is-active', link.getAttribute('href') === `#${entry.target.id}`));
+          navLinks.forEach((link) =>
+            link.classList.toggle('is-active', link.getAttribute('href') === `#${entry.target.id}`)
+          );
         });
       },
       { rootMargin: '-40% 0px -55% 0px' }

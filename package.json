@@ -1,0 +1,32 @@
+{
+  "name": "tiny-clips-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Static marketing site for Tiny Clips (https://tinyclips.app)",
+  "type": "module",
+  "scripts": {
+    "serve": "http-server site -p 8765 -a 127.0.0.1 -c-1 --silent",
+    "lint": "npm run lint:html && npm run lint:css && npm run lint:js && npm run check:format",
+    "lint:html": "html-validate \"site/**/*.html\"",
+    "lint:css": "stylelint \"site/**/*.css\"",
+    "lint:js": "eslint site",
+    "check:format": "prettier --check \"site/**/*.{css,js,json,webmanifest}\" \"*.md\"",
+    "format": "prettier --write \"site/**/*.{css,js,json,webmanifest}\" \"*.md\"",
+    "check:links": "linkinator http://127.0.0.1:8765/ --recurse --skip \"^(?!http://127.0.0.1)\" --verbosity error",
+    "test:e2e": "playwright test",
+    "test": "npm run lint && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.14.0",
+    "@playwright/test": "^1.48.0",
+    "eslint": "^9.14.0",
+    "globals": "^15.12.0",
+    "html-validate": "^8.24.0",
+    "http-server": "^14.1.1",
+    "linkinator": "^6.1.1",
+    "prettier": "^3.3.3",
+    "stylelint": "^16.10.0",
+    "stylelint-config-standard": "^36.0.1",
+    "wait-on": "^9.1.0"
+  }
+}
