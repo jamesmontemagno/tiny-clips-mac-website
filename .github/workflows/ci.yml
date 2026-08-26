@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint & validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Validate HTML
+        run: npm run lint:html
+
+      - name: Lint CSS
+        run: npm run lint:css
+
+      - name: Lint JavaScript
+        run: npm run lint:js
+
+      - name: Check formatting
+        run: npm run check:format
+
+      - name: Check internal links
+        run: |
+          npx http-server site -p 8765 -a 127.0.0.1 --silent &
+          npx wait-on http://127.0.0.1:8765/index.html --timeout 30000
+          npx linkinator http://127.0.0.1:8765/ --recurse --skip "^(?!http://127.0.0.1)" --verbosity error
+
+      - name: Validate sitemap, robots, and manifest
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, re, xml.etree.ElementTree as ET
+          ns = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          tree = ET.parse('site/sitemap.xml')
+          locs = [u.text for u in tree.getroot().findall('s:url/s:loc', ns)]
+          assert locs, 'sitemap has no URLs'
+          for loc in locs:
+              assert loc.startswith('https://tinyclips.app/'), f'non-canonical URL in sitemap: {loc}'
+              path = loc.removeprefix('https://tinyclips.app/') or 'index.html'
+              assert open(f'site/{path}', 'rb'), f'missing file for {loc}'
+          robots = open('site/robots.txt').read()
+          assert 'Sitemap: https://tinyclips.app/sitemap.xml' in robots, 'robots.txt must point at the sitemap'
+          manifest = json.load(open('site/site.webmanifest'))
+          assert manifest['name'] == 'Tiny Clips'
+          html = open('site/index.html', encoding='utf-8').read()
+          assert '<link rel="canonical" href="https://tinyclips.app/" />' in html, 'canonical must be https://tinyclips.app/'
+          for url in ('https://apps.microsoft.com/detail/9ndt5p7lcjwg', 'https://apps.apple.com/us/app/tiny-clips/id6759208660'):
+              assert url in html, f'store link missing: {url}'
+          for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', html, re.S):
+              json.loads(block)
+          print(f'sitemap OK ({len(locs)} URLs), robots OK, manifest OK, JSON-LD OK')
+          PY
+
+  e2e:
+    name: Playwright smoke tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run tests
+        run: npx playwright test
+
+      - name: Upload report on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: |
+            playwright-report
+            test-results
+          retention-days: 7

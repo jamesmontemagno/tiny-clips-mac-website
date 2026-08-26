@@ -1,0 +1,7 @@
+node_modules
+site/assets
+.impeccable
+.vs
+tiny-clips-mac
+test-results
+playwright-report
