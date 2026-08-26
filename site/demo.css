@@ -23,6 +23,8 @@
   --demo-panel-text: #f3f5ff;
   --demo-panel-muted: #a9b3d1;
   position: relative;
+  max-width: 920px;
+  margin: 0 auto;
   border-radius: var(--r-xl);
   border: 1px solid var(--border);
   background: var(--surface-solid);
