@@ -4,15 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Privacy Policy — Tiny Clips</title>
-    <meta name="description" content="Privacy Policy for Tiny Clips. Tiny Clips does not collect any personal information." />
+    <meta name="description" content="Privacy Policy for Tiny Clips on Windows and macOS. Tiny Clips does not collect any personal information; captures stay on your device." />
     <meta name="author" content="Refractored LLC" />
-    <meta name="theme-color" content="#080b14" />
+    <meta name="theme-color" content="#070a14" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://tinyclips.app/privacy.html" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://tinyclips.app/privacy.html" />
     <meta property="og:title" content="Privacy Policy — Tiny Clips" />
-    <meta property="og:description" content="Privacy Policy for Tiny Clips. Tiny Clips does not collect any personal information." />
+    <meta property="og:description" content="Privacy Policy for Tiny Clips on Windows and macOS. Tiny Clips does not collect any personal information; captures stay on your device." />
     <meta property="og:image" content="https://tinyclips.app/assets/og-image.png" />
 
     <!-- Icons -->
@@ -20,36 +20,42 @@
     <link rel="icon" type="image/png" sizes="256x256" href="./assets/app-icon-256.png" />
     <link rel="apple-touch-icon" href="./assets/app-icon-256.png" />
 
+    <link rel="manifest" href="./site.webmanifest" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
       <div class="container header-content">
-        <a class="brand" href="./index.html">
-          <img src="./assets/app-icon-128.png" alt="Tiny Clips icon" width="32" height="32" decoding="async" />
+        <a class="brand" href="./index.html" aria-label="Tiny Clips home">
+          <img src="./assets/app-icon-128.png" alt="" width="32" height="32" decoding="async" />
           <span>Tiny Clips</span>
         </a>
-        <nav>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav class="primary-nav" id="primary-nav" aria-label="Primary">
           <ul class="nav-links">
+            <li><a href="./index.html#try">Try it</a></li>
             <li><a href="./index.html#features">Features</a></li>
-            <li><a href="./index.html#settings">Settings</a></li>
-            <li><a href="./index.html#video">Video</a></li>
-            <li><a href="./index.html#gallery">Gallery</a></li>
-            <li><a href="./index.html#download">Download</a></li>
+            <li><a href="./index.html#compare">Mac vs Windows</a></li>
+            <li><a href="./index.html#gallery">Screens</a></li>
+            <li><a href="./index.html#faq">FAQ</a></li>
           </ul>
+          <a class="btn btn-primary btn-sm nav-cta" href="./index.html#download" data-store-link>Download free</a>
         </nav>
       </div>
     </header>
 
-    <main>
+    <main id="main-content" tabindex="-1">
       <section class="section">
         <div class="container legal-content">
           <h1 class="legal-title">Privacy Policy</h1>
-          <p class="legal-updated">Last updated: March 2026</p>
+          <p class="legal-updated">Last updated: August 2026</p>
 
           <p>
-            Tiny Clips for Mac is developed and maintained by Refractored LLC. This Privacy Policy describes our practices
-            regarding information when you use Tiny Clips.
+            Tiny Clips for Windows and Tiny Clips for Mac are developed and maintained by Refractored LLC. This Privacy Policy describes our practices regarding information when you use Tiny Clips on either platform, whether installed from the Microsoft Store, the Mac App Store, winget, Homebrew, TestFlight, or GitHub Releases.
           </p>
 
           <h2>No Data Collection</h2>
@@ -72,17 +78,36 @@
           <h2>Local Storage</h2>
           <p>
             Any captures (screenshots, videos, GIFs) you create with Tiny Clips are saved locally to a folder of your
-            choosing on your Mac. Refractored LLC has no access to these files.
+            choosing on your Windows PC or Mac. Optional capture statistics (daily counts of screenshots, videos, and GIFs shown in Settings → Analytics) are stored only on your device and can be reset at any time. Refractored LLC has no access to these files or statistics.
+          </p>
+
+          <h2>Microphone, Camera, and Screen Access</h2>
+          <p>
+            Tiny Clips records your screen only when you start a capture. Microphone and camera access are requested
+            only when you enable those options for a video recording, and the audio and webcam footage are written into
+            that local recording and nowhere else. You can revoke these permissions at any time in Windows Settings or
+            macOS System Settings.
           </p>
 
           <h2>Third-Party Services</h2>
           <p>
-            Tiny Clips uses <a href="https://sparkle-project.org" target="_blank" rel="noopener noreferrer">Sparkle</a>
-            for automatic software updates. Sparkle may contact our update server to check for new versions; this
-            request includes your app version and macOS version but does not include any personally identifiable
-            information. No user data is transmitted or stored.
+            <strong>Updates.</strong> Microsoft Store and Mac App Store installs are updated by those stores under their
+            own privacy policies. Direct-download builds on macOS use
+            <a href="https://sparkle-project.org" target="_blank" rel="noopener noreferrer">Sparkle</a> to check for
+            updates; that request includes your app version and macOS version but no personally identifiable information.
+            Direct builds on Windows check GitHub Releases for a newer version number and nothing more.
           </p>
-
+          <p>
+            <strong>Optional Uploadcare sharing.</strong> If you choose to connect your own
+            <a href="https://uploadcare.com" target="_blank" rel="noopener noreferrer">Uploadcare</a> account, clips you
+            explicitly upload are sent to your Uploadcare project under Uploadcare's terms and privacy policy. Your API
+            keys are stored locally (in the Windows Credential Locker or macOS Keychain) and are never sent to Refractored
+            LLC. This feature is off until you configure it.
+          </p>
+          <p>
+            <strong>File a Bug.</strong> The optional File a Bug action opens a pre-filled GitHub issue in your browser.
+            Nothing is submitted unless you choose to post it on GitHub.
+          </p>
           <h2>Children's Privacy</h2>
           <p>
             Tiny Clips does not knowingly collect personal information from children under the age of 13. Because the
@@ -106,17 +131,26 @@
 
     <footer class="site-footer">
       <div class="container footer-content">
-        <p>© 2026 Refractored LLC</p>
-        <p class="footer-tool-note">
-          Find more tiny tools like this at
-          <a href="https://www.tinytooltown.com/" target="_blank" rel="noopener noreferrer">Tiny Tool Town</a>.
-        </p>
-        <nav class="footer-links">
-          <a href="./privacy.html">Privacy Policy</a>
-          <a href="./terms.html">Terms of Use</a>
+        <div class="footer-brand">
+          <img src="./assets/app-icon-128.png" alt="" width="28" height="28" decoding="async" />
+          <div>
+            <p>© <span id="year">2026</span> Refractored LLC</p>
+            <p class="footer-tool-note">
+              Find more tiny tools like this at
+              <a href="https://www.tinytooltown.com/" target="_blank" rel="noopener noreferrer">Tiny Tool Town</a>.
+            </p>
+          </div>
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="https://apps.microsoft.com/detail/9ndt5p7lcjwg?cid=DevShareMCLPCS" target="_blank" rel="noopener noreferrer">Microsoft Store</a>
+          <a href="https://apps.apple.com/us/app/tiny-clips/id6759208660?mt=12" target="_blank" rel="noopener noreferrer">Mac App Store</a>
           <a href="https://github.com/jamesmontemagno/tiny-clips" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="./privacy.html">Privacy</a>
+          <a href="./terms.html">Terms</a>
         </nav>
       </div>
     </footer>
+
+    <script src="./script.js" defer></script>
   </body>
 </html>

@@ -6,7 +6,7 @@
     <title>Terms of Use — Tiny Clips</title>
     <meta name="description" content="Terms of Use for Tiny Clips, based on Apple's standard Licensed Application End User License Agreement." />
     <meta name="author" content="Refractored LLC" />
-    <meta name="theme-color" content="#080b14" />
+    <meta name="theme-color" content="#070a14" />
     <meta name="robots" content="index, follow" />
     <link rel="canonical" href="https://tinyclips.app/terms.html" />
     <meta property="og:type" content="website" />
@@ -20,36 +20,42 @@
     <link rel="icon" type="image/png" sizes="256x256" href="./assets/app-icon-256.png" />
     <link rel="apple-touch-icon" href="./assets/app-icon-256.png" />
 
+    <link rel="manifest" href="./site.webmanifest" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
     <header class="site-header">
       <div class="container header-content">
-        <a class="brand" href="./index.html">
-          <img src="./assets/app-icon-128.png" alt="Tiny Clips icon" width="32" height="32" decoding="async" />
+        <a class="brand" href="./index.html" aria-label="Tiny Clips home">
+          <img src="./assets/app-icon-128.png" alt="" width="32" height="32" decoding="async" />
           <span>Tiny Clips</span>
         </a>
-        <nav>
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+        <nav class="primary-nav" id="primary-nav" aria-label="Primary">
           <ul class="nav-links">
+            <li><a href="./index.html#try">Try it</a></li>
             <li><a href="./index.html#features">Features</a></li>
-            <li><a href="./index.html#settings">Settings</a></li>
-            <li><a href="./index.html#video">Video</a></li>
-            <li><a href="./index.html#gallery">Gallery</a></li>
-            <li><a href="./index.html#download">Download</a></li>
+            <li><a href="./index.html#compare">Mac vs Windows</a></li>
+            <li><a href="./index.html#gallery">Screens</a></li>
+            <li><a href="./index.html#faq">FAQ</a></li>
           </ul>
+          <a class="btn btn-primary btn-sm nav-cta" href="./index.html#download" data-store-link>Download free</a>
         </nav>
       </div>
     </header>
 
-    <main>
+    <main id="main-content" tabindex="-1">
       <section class="section">
         <div class="container legal-content">
           <h1 class="legal-title">Terms of Use</h1>
-          <p class="legal-updated">Last updated: March 2026</p>
+          <p class="legal-updated">Last updated: August 2026</p>
 
           <p>
-            The following terms apply to Tiny Clips for Mac ("Licensed Application"), developed by Refractored LLC
-            ("Licensor"). These terms are based on Apple's
+            The following terms apply to Tiny Clips for Mac and Tiny Clips for Windows ("Licensed Application"), developed by Refractored LLC ("Licensor"). Mac App Store installs are additionally governed by Apple's Standard EULA and Microsoft Store installs by the Microsoft Store Terms of Sale; the source code is available under the MIT License on GitHub. These terms are based on Apple's
             <a href="https://www.apple.com/legal/internet-services/itunes/dev/stdeula/" target="_blank" rel="noopener noreferrer">
               Licensed Application End User License Agreement
             </a>.
@@ -57,8 +63,7 @@
 
           <h2>a. Scope of License</h2>
           <p>
-            Licensor grants to you a nontransferable license to use the Licensed Application on any Apple-branded products
-            that you own or control and as permitted by the Usage Rules set forth in Apple's App Store Terms of Service.
+            Licensor grants to you a nontransferable license to use the Licensed Application on any Windows or Apple device that you own or control and, for store installs, as permitted by the usage rules of the Microsoft Store or Apple App Store.
             The terms of this license will govern any content, materials, or services accessible from or purchased within
             the Licensed Application as well as upgrades provided by Licensor that replace or supplement the original
             Licensed Application, unless such upgrade is accompanied by a separate license.
@@ -194,17 +199,26 @@
 
     <footer class="site-footer">
       <div class="container footer-content">
-        <p>© 2026 Refractored LLC</p>
-        <p class="footer-tool-note">
-          Find more tiny tools like this at
-          <a href="https://www.tinytooltown.com/" target="_blank" rel="noopener noreferrer">Tiny Tool Town</a>.
-        </p>
-        <nav class="footer-links">
-          <a href="./privacy.html">Privacy Policy</a>
-          <a href="./terms.html">Terms of Use</a>
+        <div class="footer-brand">
+          <img src="./assets/app-icon-128.png" alt="" width="28" height="28" decoding="async" />
+          <div>
+            <p>© <span id="year">2026</span> Refractored LLC</p>
+            <p class="footer-tool-note">
+              Find more tiny tools like this at
+              <a href="https://www.tinytooltown.com/" target="_blank" rel="noopener noreferrer">Tiny Tool Town</a>.
+            </p>
+          </div>
+        </div>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="https://apps.microsoft.com/detail/9ndt5p7lcjwg?cid=DevShareMCLPCS" target="_blank" rel="noopener noreferrer">Microsoft Store</a>
+          <a href="https://apps.apple.com/us/app/tiny-clips/id6759208660?mt=12" target="_blank" rel="noopener noreferrer">Mac App Store</a>
           <a href="https://github.com/jamesmontemagno/tiny-clips" target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href="./privacy.html">Privacy</a>
+          <a href="./terms.html">Terms</a>
         </nav>
       </div>
     </footer>
+
+    <script src="./script.js" defer></script>
   </body>
 </html>
