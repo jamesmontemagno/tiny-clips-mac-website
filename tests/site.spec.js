@@ -157,6 +157,15 @@ test.describe('interactive demo', () => {
     expect(errors).toEqual([]);
   });
 
+  test('Windows: PowerToys tray icon opens the easter egg', async ({ page }) => {
+    await page.click('.demo-seg button[data-platform="windows"]');
+    await page.click('.demo-powertoys-btn');
+    await expect(page.locator('.demo-powertoys-panel')).toBeVisible();
+    await expect(page.locator('.demo-powertoys-panel')).toContainText('Nice catch!');
+    await page.click('.demo-powertoys-panel button:has-text("Back to Tiny Clips")');
+    await expect(page.locator('.demo-powertoys-panel')).toBeHidden();
+  });
+
   test('Windows: video with webcam + teleprompter → hotkey stop → trimmer', async ({ page }) => {
     const errors = watchErrors(page);
     await page.click('.demo-seg button[data-platform="windows"]');

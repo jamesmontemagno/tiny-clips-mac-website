@@ -336,6 +336,70 @@
   color: #ff3b4a;
 }
 
+.demo-powertoys-btn {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.demo-powertoys-btn:hover,
+.demo-powertoys-btn:focus-visible {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.demo-powertoys-btn svg {
+  width: 15px;
+  height: 15px;
+  stroke: none;
+}
+
+.demo-powertoys-panel {
+  right: 140px;
+  bottom: 52px;
+  width: 260px;
+  padding: 14px;
+}
+
+.demo-powertoys-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.demo-powertoys-head svg {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  stroke: none;
+}
+
+.demo-powertoys-head strong {
+  font-size: 14px;
+}
+
+.demo-powertoys-head span {
+  margin-left: auto;
+  color: var(--demo-panel-muted);
+  font-size: 11px;
+}
+
+.demo-powertoys-panel p {
+  margin: 11px 0 14px;
+  color: var(--demo-panel-muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.demo-powertoys-panel .demo-btn {
+  width: 100%;
+}
+
 @keyframes tray-pulse {
   0% {
     opacity: 0.9;

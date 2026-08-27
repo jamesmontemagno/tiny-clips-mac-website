@@ -54,6 +54,8 @@
   const ICONS = {
     tinyclips:
       '<path d="M4 9V5a1 1 0 0 1 1-1h4M15 4h4a1 1 0 0 1 1 1v4M20 15v4a1 1 0 0 1-1 1h-4M9 20H5a1 1 0 0 1-1-1v-4"/><circle cx="12" cy="12" r="2.6"/>',
+    powertoys:
+      '<rect x="3" y="3" width="8" height="8" rx="2" fill="#00a4ef"/><rect x="13" y="3" width="8" height="8" rx="2" fill="#7fba00"/><rect x="3" y="13" width="8" height="8" rx="2" fill="#ffb900"/><rect x="13" y="13" width="8" height="8" rx="2" fill="#f25022"/>',
     camera: '<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.2"/>',
     video: '<rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10 5-3v10l-5-3"/>',
     gif: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 12h2v3H7v-6h2.5M12 9v6M15 15V9h3M15 12h2.5"/>',
@@ -467,6 +469,17 @@
       const searchIcon = el('span', {}, icon('search'));
       searchIcon.querySelector('svg').style.stroke = 'var(--desk-text)';
       searchIcon.querySelector('svg').style.fill = 'none';
+      const powerToysBtn = el(
+        'button',
+        {
+          class: 'demo-powertoys-btn',
+          type: 'button',
+          title: 'PowerToys',
+          'aria-label': 'Open the PowerToys easter egg',
+          onclick: openPowerToysEgg,
+        },
+        icon('powertoys')
+      );
       const bar = el(
         'div',
         { class: 'demo-taskbar' },
@@ -499,6 +512,7 @@
           'div',
           { class: 'demo-taskbar-right' },
           icon('chevronUp'),
+          powerToysBtn,
           trayBtn,
           icon('wifi'),
           icon('speaker'),
@@ -612,6 +626,32 @@
       `<strong>Ready.</strong> Click the Tiny Clips icon in the ${where}, or press ${hotkey} to take a screenshot.`
     );
   };
+
+  function openPowerToysEgg() {
+    if (state.mode !== 'idle') return;
+    clearOverlay();
+    toasts.replaceChildren();
+    setMode('powertoys');
+
+    const panel = el(
+      'div',
+      { class: 'demo-panel demo-powertoys-panel', role: 'dialog', 'aria-label': 'PowerToys' },
+      el(
+        'div',
+        { class: 'demo-powertoys-head' },
+        icon('powertoys'),
+        el('strong', {}, 'PowerToys'),
+        el('span', {}, 'Nice catch!')
+      ),
+      el('p', {}, 'Tiny Clips captures the moment. PowerToys keeps the rest of your Windows desk delightfully extra.'),
+      el('button', { class: 'demo-btn is-primary', type: 'button', onclick: () => cancelFlow() }, 'Back to Tiny Clips')
+    );
+    showOverlay(panel);
+    panel.querySelector('button')?.focus({ preventScroll: true });
+    setStatus(
+      '<strong>PowerToys spotted.</strong> A little Windows utility appreciation, from one tray icon to another.'
+    );
+  }
 
   /* ---------------------------------------------------------------------
      Tray flyout (Windows) / menu-bar menu (macOS)
