@@ -353,10 +353,9 @@
   background: rgba(0, 0, 0, 0.08);
 }
 
-.demo-powertoys-btn svg {
+.demo-powertoys-btn img {
   width: 15px;
   height: 15px;
-  stroke: none;
 }
 
 .demo-powertoys-panel {
@@ -372,11 +371,10 @@
   gap: 8px;
 }
 
-.demo-powertoys-head svg {
+.demo-powertoys-head img {
   width: 22px;
   height: 22px;
   flex: none;
-  stroke: none;
 }
 
 .demo-powertoys-head strong {

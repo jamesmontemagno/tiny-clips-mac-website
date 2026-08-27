@@ -161,6 +161,7 @@ test.describe('interactive demo', () => {
     await page.click('.demo-seg button[data-platform="windows"]');
     await page.click('.demo-powertoys-btn');
     await expect(page.locator('.demo-powertoys-panel')).toBeVisible();
+    await expect(page.locator('.demo-powertoys-btn img')).toHaveAttribute('src', './assets/powertoys-icon.svg');
     await expect(page.locator('.demo-powertoys-panel')).toContainText('Nice catch!');
     await page.click('.demo-powertoys-panel button:has-text("Back to Tiny Clips")');
     await expect(page.locator('.demo-powertoys-panel')).toBeHidden();
