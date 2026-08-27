@@ -163,6 +163,10 @@ test.describe('interactive demo', () => {
     await expect(page.locator('.demo-powertoys-panel')).toBeVisible();
     await expect(page.locator('.demo-powertoys-btn img')).toHaveAttribute('src', './assets/powertoys-icon.svg');
     await expect(page.locator('.demo-powertoys-panel')).toContainText('Nice catch!');
+    await expect(page.locator('.demo-powertoys-panel a')).toHaveAttribute(
+      'href',
+      'https://learn.microsoft.com/windows/powertoys/'
+    );
     await page.click('.demo-powertoys-panel button:has-text("Back to Tiny Clips")');
     await expect(page.locator('.demo-powertoys-panel')).toBeHidden();
   });

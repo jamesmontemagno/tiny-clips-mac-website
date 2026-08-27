@@ -394,7 +394,12 @@
   line-height: 1.45;
 }
 
-.demo-powertoys-panel .demo-btn {
+.demo-powertoys-actions {
+  display: grid;
+  gap: 8px;
+}
+
+.demo-powertoys-actions .demo-btn {
   width: 100%;
 }
 

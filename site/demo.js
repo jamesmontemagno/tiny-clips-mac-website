@@ -643,7 +643,25 @@
         el('span', {}, 'Nice catch!')
       ),
       el('p', {}, 'Tiny Clips captures the moment. PowerToys keeps the rest of your Windows desk delightfully extra.'),
-      el('button', { class: 'demo-btn is-primary', type: 'button', onclick: () => cancelFlow() }, 'Back to Tiny Clips')
+      el(
+        'div',
+        { class: 'demo-powertoys-actions' },
+        el(
+          'a',
+          {
+            class: 'demo-btn',
+            href: 'https://learn.microsoft.com/windows/powertoys/',
+            target: '_blank',
+            rel: 'noopener noreferrer',
+          },
+          'Explore PowerToys'
+        ),
+        el(
+          'button',
+          { class: 'demo-btn is-primary', type: 'button', onclick: () => cancelFlow() },
+          'Back to Tiny Clips'
+        )
+      )
     );
     showOverlay(panel);
     panel.querySelector('button')?.focus({ preventScroll: true });
